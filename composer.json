@@ -2,7 +2,7 @@
   "name": "copiadigital/gd-webp-converter",
   "type": "wordpress-plugin",
   "license": "MIT",
-  "description": "After uploaded an image it will be converted to WebP format using the GD image engine. If the file is deleted form the Media Library the created WebP conversions will also be deleted.",
+  "description": "After uploaded an image it will be converted to WebP format using the GD image engine. If the file is deleted from the Media Library the created WebP conversions will also be deleted.",
   "homepage": "https://github.com/copiadigital/gd-webp-converter",
   "authors": [
     {
