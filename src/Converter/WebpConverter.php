@@ -64,30 +64,40 @@ class WebpConverter {
 
         finfo_close( $finfo );
         // $this->debug( $this->file_mime_type );
+        // error_log(print_r( $this->file_mime_type, true ));
 
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-        $this->allowed_mime_type = array( 'image/jpeg', 'image/png' );
-
-        if ( ! in_array( $this->file_mime_type, $this->allowed_mime_type, true ) ) {
-
-            $message = 'MIME type of file not supported';
-            // $this->debug( $message );
-            throw new Exception( 'MIME type of file not supported', 1 );
-
+        if(isset($this->allowed_mime_type)){
+            if ( in_array( $this->file_mime_type, $this->allowed_mime_type, true ) ) {
+                $this->allowed_mime_type = array( 'image/jpeg', 'image/png' );
+            }
         }
+
+        // if ( ! in_array( $this->file_mime_type, $this->allowed_mime_type, true ) ) {
+
+        //     $message = 'MIME type of file not supported';
+        //     // $this->debug( $message );
+        //     throw new Exception( 'MIME type of file not supported', 1 );
+
+        // }
     }
 
     public function create_array_of_sizes_to_be_converted( $metadata ) {
-
+        // $this->debug( $this->array_of_sizes_to_be_converted );
+        
         // push original file to the array
         array_push( $this->array_of_sizes_to_be_converted, $this->file_path );
-        // $this->debug( $this->array_of_sizes_to_be_converted );
 
-        // push all created sizes of the file to the array
-        foreach ( $metadata['sizes'] as $value ) {
-            // $this->debug( $value['file'] );
-            array_push( $this->array_of_sizes_to_be_converted, $this->file_dirname . '/' . $value['file'] );
+        if(!empty($metadata['sizes'])) {
+            // push all created sizes of the file to the array
+            foreach ( $metadata['sizes'] as $value ) {
+                // $this->debug( $value['file'] );
+                array_push( $this->array_of_sizes_to_be_converted, $this->file_dirname . '/' . $value['file'] );
+            }
         }
+        // else {
+        //     error_log(print_r( $metadata, true ));
+        // }
         // // $this->debug( $this->array_of_sizes_to_be_converted );
     }
 
@@ -177,23 +187,28 @@ class WebpConverter {
         // $this->debug( $attachment_id );
 
         $this->attachment_metadata_of_file_to_be_deleted = wp_get_attachment_metadata( $attachment_id );
-        // $this->debug( $this->attachment_metadata_of_file_to_be_deleted );
 
         // push original file to the array
         array_push( $this->array_of_sizes_to_be_deleted, $this->file_dirname . '/' . $this->file_name_no_ext . '.webp' );
-        // $this->debug( $this->array_of_sizes_to_be_converted );
 
-        // push all created sizes of the file to the array
-        foreach ( $this->attachment_metadata_of_file_to_be_deleted['sizes'] as $value ) {
+        // $this->debug( $this->attachment_metadata_of_file_to_be_deleted );
+        // error_log(print_r( $this->attachment_metadata_of_file_to_be_deleted, true ));
 
-            // $this->debug( $value );
+        if(!empty($this->attachment_metadata_of_file_to_be_deleted['sizes'])) {
+            // $this->debug( $this->array_of_sizes_to_be_converted );
+            
+            // push all created sizes of the file to the array
+            foreach ( $this->attachment_metadata_of_file_to_be_deleted['sizes'] as $value ) {
 
-            $this->value_file_name_no_ext = pathinfo( $value['file'], PATHINFO_FILENAME );
-            // $this->debug( $this->value_file_name_no_ext );
+                // $this->debug( $value );
 
-            array_push( $this->array_of_sizes_to_be_deleted, $this->file_dirname . '/' . $this->value_file_name_no_ext . '.webp' );
+                $this->value_file_name_no_ext = pathinfo( $value['file'], PATHINFO_FILENAME );
+                // $this->debug( $this->value_file_name_no_ext );
+
+                array_push( $this->array_of_sizes_to_be_deleted, $this->file_dirname . '/' . $this->value_file_name_no_ext . '.webp' );
+            }
+            // $this->debug( $this->array_of_sizes_to_be_deleted );
         }
-        // $this->debug( $this->array_of_sizes_to_be_deleted );
     }
 
     public function delete_array_of_sizes() {
