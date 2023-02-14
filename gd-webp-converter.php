@@ -18,3 +18,15 @@ $clover = new GdWebpConverter\Providers\GdWebpConverterServiceProvider;
 $clover->register();
 
 add_action('init', [$clover, 'boot']);
+
+add_action('plugins_loaded', function() {
+    if (!class_exists('acf')) {
+        deactivate_plugins('gd-webp-converter/gd-webp-converter.php');
+        add_action( 'admin_notices', function() {
+            $class = 'notice notice-error';
+            $message = __( 'ACF Class not found!', 'gd-webp-converter' );
+  
+            printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+        } );
+    }
+});

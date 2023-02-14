@@ -19,12 +19,15 @@ class ConvertAttachmentServiceProvider implements Provider
 
     public function gd_webp_converter_image_attachment_src( $image, $id, $size, $icon ) {
         $getFile = get_attached_file($id);
-        if($getFile) {
-            $getFileInfo = pathinfo($getFile);
-            $imgExtArr = ['jpg', 'jpeg', 'png'];
-            if(in_array($getFileInfo['extension'], $imgExtArr)) {
-                if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
-                    return str_replace(['.png', '.jpg', '.jpeg'], '.webp', $image);
+        $mediaSwitcher = get_field('gd_webp_mime_type_switcher', $id);
+        if(!$mediaSwitcher) {
+            if($getFile) {
+                $getFileInfo = pathinfo($getFile);
+                $imgExtArr = ['jpg', 'jpeg', 'png'];
+                if(in_array($getFileInfo['extension'], $imgExtArr)) {
+                    if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
+                        return str_replace(['.png', '.jpg', '.jpeg'], '.webp', $image);
+                    }
                 }
             }
         }
@@ -33,12 +36,15 @@ class ConvertAttachmentServiceProvider implements Provider
 
     public function gd_webp_converter_image_attachment_url( $url, $id ) {
         $getFile = get_attached_file($id);
-        if($getFile) {
-            $getFileInfo = pathinfo($getFile);
-            $imgExtArr = ['jpg', 'jpeg', 'png'];
-            if(in_array($getFileInfo['extension'], $imgExtArr)) {
-                if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
-                    return str_replace(['.png', '.jpg', '.jpeg'], '.webp', $url);
+        $mediaSwitcher = get_field('gd_webp_mime_type_switcher', $id);
+        if(!$mediaSwitcher) {
+            if($getFile) {
+                $getFileInfo = pathinfo($getFile);
+                $imgExtArr = ['jpg', 'jpeg', 'png'];
+                if(in_array($getFileInfo['extension'], $imgExtArr)) {
+                    if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
+                        return str_replace(['.png', '.jpg', '.jpeg'], '.webp', $url);
+                    }
                 }
             }
         }
@@ -47,21 +53,24 @@ class ConvertAttachmentServiceProvider implements Provider
 
     public function gd_webp_converter_image_srcset($sources, $size_array, $image_src, $image_meta, $attachment_id) {
         $getFile = get_attached_file($attachment_id);
-        if($getFile) {
-            $getFileInfo = pathinfo($getFile);
-            $imgExtArr = ['jpg', 'jpeg', 'png'];
-            $images = [];
-            if(in_array($getFileInfo['extension'], $imgExtArr)) {
-                if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
-                    foreach($sources as $source) {
-                        $src = str_replace(['.png', '.jpg', '.jpeg'], '.webp', $source['url']);
-                        $images[] = [
-                            'url' => $src,
-                            'descriptor' => $source['descriptor'],
-                            'value' => $source['value']
-                        ];
+        $mediaSwitcher = get_field('gd_webp_mime_type_switcher', $attachment_id);
+        if(!$mediaSwitcher) {
+            if($getFile) {
+                $getFileInfo = pathinfo($getFile);
+                $imgExtArr = ['jpg', 'jpeg', 'png'];
+                $images = [];
+                if(in_array($getFileInfo['extension'], $imgExtArr)) {
+                    if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
+                        foreach($sources as $source) {
+                            $src = str_replace(['.png', '.jpg', '.jpeg'], '.webp', $source['url']);
+                            $images[] = [
+                                'url' => $src,
+                                'descriptor' => $source['descriptor'],
+                                'value' => $source['value']
+                            ];
+                        }
+                        return $images;
                     }
-                    return $images;
                 }
             }
         }
@@ -70,12 +79,15 @@ class ConvertAttachmentServiceProvider implements Provider
 
     public function gd_webp_converter_attachment_metadata($data, $attachment_id) {
         $getFile = get_attached_file($attachment_id);
-        if($getFile) {
-            $getFileInfo = pathinfo($getFile);
-            $imgExtArr = ['jpg', 'jpeg', 'png'];
-            if(in_array($getFileInfo['extension'], $imgExtArr)) {
-                if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
-                    return str_replace(['.png', '.jpg', '.jpeg'], '.webp', $data);
+        $mediaSwitcher = get_field('gd_webp_mime_type_switcher', $attachment_id);
+        if(!$mediaSwitcher) {
+            if($getFile) {
+                $getFileInfo = pathinfo($getFile);
+                $imgExtArr = ['jpg', 'jpeg', 'png'];
+                if(in_array($getFileInfo['extension'], $imgExtArr)) {
+                    if (file_exists($getFileInfo['dirname'] . '/' . $getFileInfo['filename'] . '.webp')) {
+                        return str_replace(['.png', '.jpg', '.jpeg'], '.webp', $data);
+                    }
                 }
             }
         }

@@ -9,6 +9,7 @@ class GdWebpConverterServiceProvider implements Provider
         return [
             GdDefaultServiceProvider::class,
             ConverterServiceProvider::class,
+            FieldsServiceProvider::class,
             ConvertAttachmentServiceProvider::class,
         ];
     }
